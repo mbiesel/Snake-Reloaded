@@ -1,148 +1,160 @@
 Crafty.c('Grid', {
-    init: function () {
-        this.attr({
-            w: Game.map_grid.tile.width,
-            h: Game.map_grid.tile.height
-        })
-    },
+	init: function () {
+		this.attr({
+			          w: Game.map_grid.tile.width,
+			          h: Game.map_grid.tile.height
+		          })
+	},
 
-    at: function (x, y) {
-        if (x === undefined && y === undefined) {
-            return { x: this.x / Game.map_grid.tile.width, y: this.y / Game.map_grid.tile.height }
-        } else {
-            this.attr({ x: x * Game.map_grid.tile.width, y: y * Game.map_grid.tile.height });
-            return this;
-        }
-    }
+	at: function (x, y) {
+		if (x === undefined && y === undefined) {
+			return { x: this.x / Game.map_grid.tile.width, y: this.y / Game.map_grid.tile.height }
+		} else {
+			this.attr({ x: x * Game.map_grid.tile.width, y: y * Game.map_grid.tile.height });
+			return this;
+		}
+	}
 
 });
 
 Crafty.c('Actor', {
-    init: function () {
-        this.requires('2D, Canvas, Grid');
-    }
+	init: function () {
+		this.requires('2D, Canvas, Grid');
+	}
 });
 
 Crafty.c('Wall', {
-    init: function () {
-        this.requires('Actor, Color, Solid')
-            .color('grey');
-    }
+	init: function () {
+		this.requires('Actor, Color, Solid')
+				.color('grey');
+	}
 });
 
 Crafty.c('Food', {
-    init: function () {
-        this.requires('Actor, Color')
-            .color('black');
-    }
+	init: function () {
+		this.requires('Actor, Color')
+				.color('black');
+	}
 });
 
 Crafty.c('SnakeCell', {
-    init: function () {
-        this.requires('Actor, Color, Solid')
-            .color('green');
-    }
+	init: function () {
+		this.requires('Actor, Color, Solid')
+				.color('green');
+	}
 });
 
 Crafty.c('SnakeHead', {
-    speed: 400,
-    eaten: 0,
-    direction: "s",
-    init: function () {
-        this.positions = [];
-        this.cells = [];
-        this.requires('Actor, Color, Keyboard, Collision')
-            .color('green')
-            .bind('KeyDown', function () {
+	speed: 400,
+	eaten: 0,
+	direction: "s",
+	init: function () {
+		this.positions = [];
+		this.cells = [];
+		this.requires('Actor, Color, Keyboard, Collision')
+				.color('green')
+				.bind('KeyDown', function () {
 
-                if (this.isDown('W') && this.direction != "s") {
-                    this.direction = "n";
-                }
-                else if (this.isDown('A') && this.direction != "e") {
-                    this.direction = "w";
-                }
-                else if (this.isDown('S') && this.direction != "n") {
-                    this.direction = "s";
-                }
-                else if (this.isDown('D') && this.direction != "w") {
-                    this.direction = "e";
-                }
-
-
-            })
-            .moveSnake()
-            .collide()
-            .eat();
-
-    },
-    moveSnake: function () {
-        this.interval = setInterval(function () {
-            this.positions.unshift(this.at());
-            this.cells.push(Crafty.e('SnakeCell').at(this.positions[0].x,this.positions[0].y));
-
-            //this.eaten+2 = length snake + 1 grow slot
-            while (this.positions.length > this.eaten + 2) {
-                this.positions.pop();
-                var old = this.cells.shift();
-                old.destroy();
-            }
-
-            this.move(this.direction, Game.map_grid.tile.height);
-        }.bind(this), this.speed);
-
-        return this;
-    },
+					      if (this.isDown('W') && this.direction != "s") {
+						      this.direction = "n";
+					      }
+					      else
+						      if (this.isDown('A') && this.direction != "e") {
+							      this.direction = "w";
+						      }
+						      else
+							      if (this.isDown('S') && this.direction != "n") {
+								      this.direction = "s";
+							      }
+							      else
+								      if (this.isDown('D') && this.direction != "w") {
+									      this.direction = "e";
+								      }
 
 
-    collide: function () {
-        this.onHit('Solid', function () {
-            this.reduceInterval(0);
-            Crafty.scene("GameOver", {score: this.eaten});
-        });
+				      })
+				.moveSnake()
+				.collide()
+				.eat();
 
-        return this;
-    },
+	},
+	moveSnake: function () {
+		this.interval = setInterval(function () {
+			this.positions.unshift(this.at());
+			this.cells.push(Crafty.e('SnakeCell').at(this.positions[0].x, this.positions[0].y));
 
-    eat: function () {
-        this.onHit('Food', function (data) {
-            var food = data[0].obj;
-            food.destroy();
-            this.reduceInterval(0.95);
-            this.eaten++;
-            setTimeout(function () {
-                Crafty.e('Food').at(randomIntFromInterval(1, Game.map_grid.width - 2),
-                    randomIntFromInterval(1, Game.map_grid.height - 2))
-            }, this.speed)
-        });
+			//this.eaten+2 = length snake + 1 grow slot
+			while (this.positions.length > this.eaten + 2) {
+				this.positions.pop();
+				var old = this.cells.shift();
+				old.destroy();
+			}
 
-        return this;
-    },
+			this.move(this.direction, Game.map_grid.tile.height);
+		}.bind(this), this.speed);
 
-    reduceInterval: function(reduction){
-        clearInterval(this.interval);
-        if(reduction > 0) {
+		return this;
+	},
 
-            this.speed = this.speed * reduction;
 
-            this.interval = setInterval(function () {
-                this.positions.unshift(this.at());
-                this.cells.push(Crafty.e('SnakeCell').at(this.positions[0].x, this.positions[0].y));
+	collide: function () {
+		this.onHit('Solid', function () {
+			this.reduceInterval(0);
+			Crafty.scene("GameOver", {score: this.eaten});
+			Crafty.e('DB').saveHighestScore(this.eaten);
+		});
 
-                //this.eaten+2 = length snake + 1 grow slot
-                while (this.positions.length > this.eaten + 2) {
-                    this.positions.pop();
-                    var old = this.cells.shift();
-                    old.destroy();
-                }
+		return this;
+	},
 
-                this.move(this.direction, Game.map_grid.tile.height);
+	eat: function () {
+		this.onHit('Food', function (data) {
+			var food = data[0].obj;
+			food.destroy();
+			this.reduceInterval(0.95);
+			this.eaten++;
+			setTimeout(function () {
+				Crafty.e('Food').at(randomIntFromInterval(1, Game.map_grid.width - 2),
+				                    randomIntFromInterval(1, Game.map_grid.height - 2))
+			}, this.speed)
+		});
 
-            }.bind(this), this.speed);
-        }
-    }
+		return this;
+	},
+
+	reduceInterval: function (reduction) {
+		clearInterval(this.interval);
+		if (reduction > 0) {
+
+			this.speed = this.speed * reduction;
+
+			this.interval = setInterval(function () {
+				this.positions.unshift(this.at());
+				this.cells.push(Crafty.e('SnakeCell').at(this.positions[0].x, this.positions[0].y));
+
+				//this.eaten+2 = length snake + 1 grow slot
+				while (this.positions.length > this.eaten + 2) {
+					this.positions.pop();
+					var old = this.cells.shift();
+					old.destroy();
+				}
+
+				this.move(this.direction, Game.map_grid.tile.height);
+
+			}.bind(this), this.speed);
+		}
+	}
 
 });
 
+Crafty.c('DB', {
+	saveHighestScore: function (eaten) {
+		if(Crafty.storage('highestScore') < eaten) {
+			Crafty.storage('highestScore', eaten);
+		}
+	}
+});
+
 function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+	return Math.floor(Math.random() * (max - min + 1) + min);
 }
