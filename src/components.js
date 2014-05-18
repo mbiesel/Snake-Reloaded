@@ -1,9 +1,9 @@
 Crafty.c('Grid', {
 	init: function () {
 		this.attr({
-			          w: Game.map_grid.tile.width,
-			          h: Game.map_grid.tile.height
-		          })
+			w: Game.map_grid.tile.width,
+			h: Game.map_grid.tile.height
+		})
 	},
 
 	at: function (x, y) {
@@ -26,21 +26,21 @@ Crafty.c('Actor', {
 Crafty.c('Wall', {
 	init: function () {
 		this.requires('Actor, Color, Solid')
-				.color('grey');
+			.color('grey');
 	}
 });
 
 Crafty.c('Food', {
 	init: function () {
 		this.requires('Actor, Color')
-				.color('black');
+			.color('black');
 	}
 });
 
 Crafty.c('SnakeCell', {
 	init: function () {
 		this.requires('Actor, Color, Solid')
-				.color('green');
+			.color('green');
 	}
 });
 
@@ -52,30 +52,27 @@ Crafty.c('SnakeHead', {
 		this.positions = [];
 		this.cells = [];
 		this.requires('Actor, Color, Keyboard, Collision')
-				.color('green')
-				.bind('KeyDown', function () {
+			.color('green')
+			.bind('KeyDown', function () {
 
-					      if (this.isDown('W') && this.direction != "s") {
-						      this.direction = "n";
-					      }
-					      else
-						      if (this.isDown('A') && this.direction != "e") {
-							      this.direction = "w";
-						      }
-						      else
-							      if (this.isDown('S') && this.direction != "n") {
-								      this.direction = "s";
-							      }
-							      else
-								      if (this.isDown('D') && this.direction != "w") {
-									      this.direction = "e";
-								      }
+				if (this.isDown('W') && this.direction != "s") {
+					this.direction = "n";
+				}
+				else if (this.isDown('A') && this.direction != "e") {
+					this.direction = "w";
+				}
+				else if (this.isDown('S') && this.direction != "n") {
+					this.direction = "s";
+				}
+				else if (this.isDown('D') && this.direction != "w") {
+					this.direction = "e";
+				}
 
 
-				      })
-				.moveSnake()
-				.collide()
-				.eat();
+			})
+			.moveSnake()
+			.collide()
+			.eat();
 
 	},
 	moveSnake: function () {
@@ -115,7 +112,7 @@ Crafty.c('SnakeHead', {
 			this.eaten++;
 			setTimeout(function () {
 				Crafty.e('Food').at(randomIntFromInterval(1, Game.map_grid.width - 2),
-				                    randomIntFromInterval(1, Game.map_grid.height - 2))
+					randomIntFromInterval(1, Game.map_grid.height - 2))
 			}, this.speed)
 		});
 
@@ -149,7 +146,7 @@ Crafty.c('SnakeHead', {
 
 Crafty.c('DB', {
 	saveHighestScore: function (eaten) {
-		if(Crafty.storage('highestScore') < eaten) {
+		if (Crafty.storage('highestScore') < eaten) {
 			Crafty.storage('highestScore', eaten);
 		}
 	}
