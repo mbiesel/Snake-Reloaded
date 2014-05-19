@@ -98,7 +98,6 @@ Crafty.c('SnakeHead', {
 		this.onHit('Solid', function () {
 			this.reduceInterval(0);
 			Crafty.scene("GameOver", {score: this.eaten});
-			Crafty.e('DB').saveHighestScore(this.eaten);
 		});
 
 		return this;
