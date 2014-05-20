@@ -16,21 +16,20 @@ Game = {
 		return this.map_grid.height * this.map_grid.tile.height;
 	},
 
+    randomIntFromInterval: function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+
+    saveHighestScore: function (score) {
+        if (Crafty.storage('highestScore') < score) {
+            Crafty.storage('highestScore', score);
+        }
+    },
+
 	start: function () {
 		Crafty.init(Game.width(), Game.height());
 		Crafty.background('white');
 
-		for (var x = 0; x < Game.map_grid.width; x++) {
-			for (var y = 0; y < Game.map_grid.height; y++) {
-				var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
-
-				if (at_edge) {
-					Crafty.e('Wall').at(x, y);
-				}
-			}
-		}
-
-		Crafty.e('SnakeHead').at(5, 5);
-		Crafty.e('Food').at(5, 10);
+        Crafty.scene('Game');
 	}
 };

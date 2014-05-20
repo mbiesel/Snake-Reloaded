@@ -110,8 +110,8 @@ Crafty.c('SnakeHead', {
 			this.reduceInterval(0.95);
 			this.eaten++;
 			setTimeout(function () {
-				Crafty.e('Food').at(randomIntFromInterval(1, Game.map_grid.width - 2),
-					randomIntFromInterval(1, Game.map_grid.height - 2))
+				Crafty.e('Food').at(Game.randomIntFromInterval(1, Game.map_grid.width - 2),
+					Game.randomIntFromInterval(1, Game.map_grid.height - 2))
 			}, this.speed)
 		});
 
@@ -142,15 +142,3 @@ Crafty.c('SnakeHead', {
 	}
 
 });
-
-Crafty.c('DB', {
-	saveHighestScore: function (eaten) {
-		if (Crafty.storage('highestScore') < eaten) {
-			Crafty.storage('highestScore', eaten);
-		}
-	}
-});
-
-function randomIntFromInterval(min, max) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-}
