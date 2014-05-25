@@ -1,4 +1,18 @@
-Crafty.scene('Game', function(){
+Crafty.scene('Welcome', function () {
+    Crafty.e('2D', 'DOM', 'Text')
+        .text('<h1>Welcome to Snake-Reloaded</h1>' +
+            '   <input type="text" id="name" name="name" placeholder="username">')
+        .attr({ x: 0, y: 10, w: Game.width() })
+        .bind('KeyDown', function (e) {
+            if (e.key == Crafty.keys.ENTER) {
+                username = document.getElementById('name').value;
+                Crafty.scene('Game');
+            }
+        })
+
+});
+
+Crafty.scene('Game', function () {
     for (var x = 0; x < Game.map_grid.width; x++) {
         for (var y = 0; y < Game.map_grid.height; y++) {
             var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
@@ -15,11 +29,21 @@ Crafty.scene('Game', function(){
 
 Crafty.scene('GameOver', function (data) {
     Game.saveHighestScore(data.score);
-	Crafty.e('2D, DOM, Text')
-		.text('Game Over! Score: ' + data.score + '<br>Your Highest Score Was: ' + Crafty.storage('highestScore')
-    + '<br> Press Any Key To Start A New Game')
-		.attr({ x: 0, y: Game.height() / 2 - 24, w: Game.width() })
-        .bind('KeyDown', function(){
+    Crafty.e('2D, DOM, Text')
+        .text('<h1>Game Over! Score: ' + data.score + '</h1>'
+            + function () {
+                var ret = '';
+                for (i = 0; i < 10; i++) {
+                    try {
+                        ret += '<h2>' + (i + 1) + ': ' + scoreList[i].score + ' ' + scoreList[i].username + '</h2>'
+                    } catch (e) {
+                    }
+                }
+                return ret;
+            }()
+            + '<br> Press Any Key To Start A New Game')
+        .attr({ x: 0, y: 10, w: Game.width() })
+        .bind('KeyDown', function () {
             Crafty.scene('Game');
         })
 });
