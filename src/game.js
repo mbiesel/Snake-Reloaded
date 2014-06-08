@@ -1,6 +1,3 @@
-var username,
-    scoreList = [];
-
 Game = {
     map_grid: {
         width: 48,
@@ -23,29 +20,8 @@ Game = {
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
 
-    saveHighestScore: function (score) {
-        var scoreItem = {
-            score: score,
-            username: username
-        };
-
-        for (i = 0; i < 10; i++) {
-            if (scoreList[i] == undefined || score > scoreList[i].score) {
-                for (j = 10; j > i; j--) {
-                    scoreList[j] = scoreList[j - 1]
-                }
-                scoreList[i] = scoreItem;
-                break;
-            }
-
-        }
-        Crafty.storage('highScoreList', scoreList);
-    },
-
     start: function () {
-        if (Crafty.storage('highScoreList')) {
-            scoreList = Crafty.storage('highScoreList');
-        }
+        HighScoreListService.init();
         Crafty.init(Game.width(), Game.height());
         Crafty.background('white');
 
