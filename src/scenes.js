@@ -2,14 +2,13 @@ Crafty.scene('Welcome', function () {
     Crafty.e('2D', 'DOM', 'Text')
         .text('<h1>Welcome to Snake-Reloaded</h1>' +
             '   <input type="text" id="name" name="name" placeholder="username">')
-        .attr({ x: 0, y: 10, w: Game.width() })
+        .attr({ x: 0, y: 10, w: Game.width()})
         .bind('KeyDown', function (e) {
             if (e.key == Crafty.keys.ENTER) {
-                HighScoreListService.setUsername(document.getElementById('name').value);
+                HighScoreListService.gameData.setUsername(document.getElementById('name').value);
                 Crafty.scene('Game');
             }
         })
-
 });
 
 Crafty.scene('Game', function () {
