@@ -10,4 +10,4 @@ Now we are at the beginning of development, but you can try it now.<br>
 Check it out and give us your feedback ;-)
 
 
-![alt snake](/Docs/img/snake.png "Snake")
+![alt snake](/docs/img/snake.png "Snake")
