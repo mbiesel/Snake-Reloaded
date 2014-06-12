@@ -35,7 +35,7 @@ HighScoreListService = {
         Crafty.storage(FILE_NAME, scoreList);
     },
 
-    // whole highScore to string, to see all scores for the game over scene
+    // whole highScoreList to string, to see all scores for the game over scene
     toString: function () {
         var scoreList = this.gameData.getScoreList(),
             ret = '';
