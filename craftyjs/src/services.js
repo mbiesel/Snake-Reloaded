@@ -5,15 +5,14 @@ HighScoreListService = {
 
     // init the highScore list
     init: function () {
-        var list;
+        var list = new Array(10);
         if (Crafty.storage(FILE_NAME)) {
             list = Crafty.storage(FILE_NAME);
+            list.forEach(function (value, key) {
+                list[key] = new HighScoreItem(value)
+            });
         } else {
-            var scoreList = [9];
-            for (var i = 0; i < 10; i++) {
-                scoreList[i] = new HighScoreItem(null, null);
-            }
-            list = scoreList;
+            list = Config.initHighScoreList();
         }
         this.gameData = new GameData(list);
     },
@@ -21,7 +20,6 @@ HighScoreListService = {
     // save a new score
     saveScore: function (score) {
         var scoreList = this.gameData.getScoreList();
-
         for (var i = 0; i < 10; i++) {
             if (score > scoreList[i].score) {
                 for (var j = 9; j > i; j--) {
@@ -48,29 +46,3 @@ HighScoreListService = {
         return ret;
     }
 };
-
-function GameData(scoreList) {
-    this.username = null;
-    this.scoreList = scoreList
-}
-
-GameData.prototype.getUsername = function () {
-    return this.username;
-};
-
-GameData.prototype.setUsername = function (username) {
-    this.username = username;
-};
-
-GameData.prototype.getScoreList = function () {
-    return this.scoreList;
-};
-
-GameData.prototype.setScoreList = function (username) {
-    this.scoreList = username;
-};
-
-function HighScoreItem(username, score) {
-    this.username = username;
-    this.score = score;
-}
