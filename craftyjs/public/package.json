@@ -1,0 +1,26 @@
+{
+    "main": "index.html",
+    "name": "Snake-Reloaded",
+    "description": "A snake revival game",
+    "version": "0.1.0",
+    "keywords": [ "demo", "node-webkit" ],
+    "window": {
+        "title": "Snake-Reloaded",
+        "icon": "snake-icon.png",
+        "toolbar": false,
+        "frame": true,
+        "width": 800,
+        "height": 400,
+        "position": "center",
+        "min_width": 400,
+        "min_height": 200,
+        "max_width": 800,
+        "max_height": 600
+    },
+    "webkit": {
+        "plugin": true
+    },
+    "dependencies": {
+        "deck":"latest"
+    }
+}
