@@ -3,8 +3,8 @@ const FILE_NAME = "Snake-Reloaded-HighScoreList";
 HighScoreListService = {
     gameData: null,
 
-    // init the highScore list
-    init: function () {
+    // init the highScore list, from storage or new list from config
+    init: function (username) {
         var list = new Array(10);
         if (Crafty.storage(FILE_NAME)) {
             list = Crafty.storage(FILE_NAME);
@@ -14,7 +14,7 @@ HighScoreListService = {
         } else {
             list = Config.initHighScoreList();
         }
-        this.gameData = new GameData(list);
+        this.gameData = new GameData(username, list);
     },
 
     // save a new score

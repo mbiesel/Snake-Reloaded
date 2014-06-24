@@ -21,7 +21,6 @@ Game = {
     },
 
     start: function () {
-        HighScoreListService.init();
         Crafty.init(Game.width(), Game.height());
         Crafty.background('white');
 

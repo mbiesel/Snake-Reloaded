@@ -1,14 +1,10 @@
-function GameData(scoreList) {
-    this.username = '';
+function GameData(username, scoreList) {
+    this.username = username;
     this.scoreList = scoreList
 }
 
 GameData.prototype.getUsername = function () {
     return this.username;
-};
-
-GameData.prototype.setUsername = function (username) {
-    this.username = username;
 };
 
 GameData.prototype.getScoreList = function () {

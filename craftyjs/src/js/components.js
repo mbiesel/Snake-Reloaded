@@ -45,7 +45,7 @@ Crafty.c('SnakeCell', {
 });
 
 Crafty.c('SnakeHead', {
-	speed: 400,
+	speed: 300,
 	eaten: 0,
 	direction: "s",
 	init: function () {
@@ -75,6 +75,7 @@ Crafty.c('SnakeHead', {
 			.eat();
 
 	},
+
 	moveSnake: function () {
 		this.interval = setInterval(function () {
 			this.positions.unshift(this.at());
@@ -92,7 +93,6 @@ Crafty.c('SnakeHead', {
 
 		return this;
 	},
-
 
 	collide: function () {
 		this.onHit('Solid', function () {

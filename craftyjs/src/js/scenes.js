@@ -5,7 +5,7 @@ Crafty.scene('Welcome', function () {
         .attr({ x: 0, y: 10, w: Game.width()})
         .bind('KeyDown', function (e) {
             if (e.key == Crafty.keys.ENTER) {
-                HighScoreListService.gameData.setUsername(document.getElementById('name').value);
+                HighScoreListService.init(document.getElementById('name').value);
                 Crafty.scene('Game');
             }
         })
