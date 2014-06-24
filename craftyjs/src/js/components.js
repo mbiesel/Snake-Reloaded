@@ -45,6 +45,7 @@ Crafty.c('SnakeCell', {
 });
 
 Crafty.c('SnakeHead', {
+    startingLength: 2,
 	speed: 300,
 	eaten: 0,
 	direction: "s",
@@ -77,19 +78,7 @@ Crafty.c('SnakeHead', {
 	},
 
 	moveSnake: function () {
-		this.interval = setInterval(function () {
-			this.positions.unshift(this.at());
-			this.cells.push(Crafty.e('SnakeCell').at(this.positions[0].x, this.positions[0].y));
-
-			//this.eaten+2 = length snake + 1 grow slot
-			while (this.positions.length > this.eaten + 2) {
-				this.positions.pop();
-				var old = this.cells.shift();
-				old.destroy();
-			}
-
-			this.move(this.direction, Game.map_grid.tile.height);
-		}.bind(this), this.speed);
+		this.reduceInterval(1);
 
 		return this;
 	},
@@ -128,8 +117,7 @@ Crafty.c('SnakeHead', {
 				this.positions.unshift(this.at());
 				this.cells.push(Crafty.e('SnakeCell').at(this.positions[0].x, this.positions[0].y));
 
-				//this.eaten+2 = length snake + 1 grow slot
-				while (this.positions.length > this.eaten + 2) {
+				while (this.positions.length > this.eaten + this.startingLength) {
 					this.positions.pop();
 					var old = this.cells.shift();
 					old.destroy();
