@@ -1,0 +1,67 @@
+html {
+    height: 100%;
+    background: #9fc2e9; /* Old browsers */
+    background: -moz-linear-gradient(top, #9fc2e9 0%, #b5d5ef 30%, #aacff0 76%, #d2e6f6 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#9fc2e9), color-stop(30%,#b5d5ef), color-stop(76%,#aacff0), color-stop(100%,#d2e6f6)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #9fc2e9 0%,#b5d5ef 30%,#aacff0 76%,#d2e6f6 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #9fc2e9 0%,#b5d5ef 30%,#aacff0 76%,#d2e6f6 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #9fc2e9 0%,#b5d5ef 30%,#aacff0 76%,#d2e6f6 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #9fc2e9 0%,#b5d5ef 30%,#aacff0 76%,#d2e6f6 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9fc2e9', endColorstr='#d2e6f6',GradientType=0 ); /* IE6-9 */
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+#board {
+    display:block;
+    background: grey;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+#snake_field {
+    border: 5px solid black;
+}
+
+.paused {
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     top: 0;
+     left: 0;
+     background-color: black;
+     opacity: 0.9;
+     color: white;
+     font-size: 250%;
+ }
+
+.paused h1 {
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    top: 30%;
+}
+
+.lost {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.9;
+    color: white;
+    font-size: 250%;
+}
+
+.lost>h2, .lost>h1 {
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    top: 30%;
+}
