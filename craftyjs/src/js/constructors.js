@@ -11,8 +11,8 @@ GameData.prototype.getScoreList = function () {
     return this.scoreList;
 };
 
-GameData.prototype.setScoreList = function (username) {
-    this.scoreList = username;
+GameData.prototype.setScoreList = function (scoreList) {
+    this.scoreList = scoreList;
 };
 
 function HighScoreItem(username, score) {
