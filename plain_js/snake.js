@@ -1,50 +1,94 @@
 /**
- * @author Ky
+ * @author Luong, Heidelberg
  */
 window.onload = function() {
-	var active = true;
-	var body = document.getElementsByTagName('body')[0];
-	var canvas = document.createElement('canvas');
+	var active = false;
+	var canvas = document.getElementById('canvas');
+    var gameArea = canvas.getContext('2d');
+    var field_html = document.getElementById('field');
+    var level_html = document.getElementById('level');
+    var score_html = document.getElementById('score');
+    var highscore_html = document.getElementById('highscore');
 	var direction = 0;
 	var gameMatrix = new Array(20);
-	var level = 0;
+	var level = 1;
 	var score = 0;
 	var snake = new Array(3);
 	var speed = 100;
+    localStorage.clear('highscoreList');
+    var highscoreList = JSON.parse(localStorage.getItem('highscoreList'));
 
-	//20*15 Felder mit jeweils 15px/Feld
-	canvas.width = 302;
-	canvas.height = 227;
+    if(highscoreList === null) {
+        createHighscore();
+    }
 
+    highscore_html.onclick = showHighscore;
+    level_html.value = level;
+    score_html.value = score;
+
+    //width=300px, height=225px => 20*15 Felder mit jeweils 15px/Feld
 	for (var i = 0; i < gameMatrix.length; i++) {
 		gameMatrix[i] = new Array(15);
 	}
 
-	gameArea = canvas.getContext('2d');
-
-	body.appendChild(canvas);
-
 	gameMatrix = generateRandomDot(gameMatrix);
 	gameMatrix = generateSnake(gameMatrix);
-	startSnake();
+    runSnake();
 
 	window.addEventListener('keydown', function(e) {
-		if (e.keyCode === 38 && direction !== 3) {
-			direction = 2;
-			// Hoch
-		} else if (e.keyCode === 40 && direction !== 2) {
-			direction = 3;
-			// Runter
-		} else if (e.keyCode === 37 && direction !== 0) {
-			direction = 1;
-			// Links
-		} else if (e.keyCode === 39 && direction !== 1) {
-			direction = 0;
-			// Rechts
-		}
+        switch (e.keyCode) {
+            // Esc to pause
+            case 27 :   if(active === true) {
+                            active = false;
+                            runSnake();
+                        }
+                        break;
+
+            /*  0 => right
+                1 => left
+                2 => up
+                3 => down  */
+
+            // Up to up
+            case 38 :   if(direction !== 3){
+                            direction = 2;
+                            if (active === false) {
+                                active = true;
+                                runSnake();
+                            }
+                        }
+                        break;
+            // Down to down
+            case 40 :   if(direction !== 2){
+                            direction = 3;
+                            if (active === false) {
+                                active = true;
+                                runSnake();
+                            }
+                        }
+                        break;
+            // Left to left
+            case 37 :   if(direction !== 0){
+                            direction = 1;
+                            if (active === false) {
+                                active = true;
+                                runSnake();
+                            }
+                        }
+                        break;
+            // Right to right
+            case 39 :   if(direction !== 1){
+                            direction = 0;
+                            if (active === false) {
+                                active = true;
+                                runSnake();
+                            }
+                        }
+                        break;
+        }
 	});
 
-	function startSnake() {
+	function runSnake() {
 		gameArea.clearRect(0, 0, canvas.width, canvas.height);
 		drawGameArea();
 
@@ -91,7 +135,8 @@ window.onload = function() {
 				// einen neuen Futterpunkt generieren und
 				// die schlange verlängern.
 				if (gameMatrix[snake[0].x][snake[0].y] === 1) {
-					score += 10;
+					score += 10*level;
+                    score_html.value = score;
 					gameMatrix = generateRandomDot(gameMatrix);
 
 					// Verlängern der Schlange
@@ -101,9 +146,13 @@ window.onload = function() {
 					});
 					gameMatrix[snake[snake.length - 1].x][snake[snake.length - 1].y] = 2;
 
-					// Bei allen Score-Zahlen durch Hundert wird das Level hochgesetzt
-					if ((score % 100) == 0) {
+					// Bei allen Score-Zahlen durch 50 wird das Level und der Speed hochgesetzt
+					if ((score % 50) == 0) {
 						level += 1;
+                        level_html.value = level;
+                        if(speed > 20) {
+                            speed -= 10;
+                        }
 					}
 
 					// Wenn man sich selber frisst, ist das Spiel ebenfalls beendet
@@ -112,7 +161,7 @@ window.onload = function() {
 					return;
 				}
 
-				gameMatrix[snake[0].x][snake[0].y] = 2;
+				gameMatrix[snake[0].x][snake[0].y] = 3;
 			} else {
 				// Das Array der Schlange wandert mit, somit muss das letzte Element gelöscht werden,
 				// weil die "Punkte" nachrücken
@@ -132,37 +181,42 @@ window.onload = function() {
 		for (var x = 0; x < gameMatrix.length; x++) {
 			for (var y = 0; y < gameMatrix[0].length; y++) {
 				if (gameMatrix[x][y] === 1) {
-					gameArea.fillStyle = '#000';
+					gameArea.fillStyle = '#00F';
 					gameArea.fillRect(x * 15, y * 15, 15, 15);
 				} else if (gameMatrix[x][y] === 2) {
 					gameArea.fillStyle = '#aaa';
 					gameArea.fillRect(x * 15, y * 15, 15, 15);
-				}
+				} else if (gameMatrix[x][y] === 3) {
+                    gameArea.fillStyle = '#000';
+                    gameArea.fillRect(x * 15, y * 15, 15, 15);
+                }
 			}
 		}
 
 		if (active) {
-			setTimeout(startSnake, speed - (level * 50));
+			setTimeout(runSnake, speed);
 		}
 	}
 	
-	//Zeichnet das Spielfeld
+	// Zeichnet das Spielfeld
 	function drawGameArea() {
 		gameArea.lineWidth = 1;
 		gameArea.strokeStyle = '#000';
 		gameArea.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
 	}
 
-	//Lässt zufällig "Futter erscheinen"
+	// Lässt zufällig "Futter" erscheinen
 	function generateRandomDot(gameMatrix) {
 		var randomX = Math.round(Math.random() * 19);
 		var randomY = Math.round(Math.random() * 14);
 
+        // 2 bedeutet, dass das Feld von der Schlange belegt wird
 		while (gameMatrix[randomX][randomY] === 2) {
 			randomX = Math.round(Math.random() * 19);
 			randomY = Math.round(Math.random() * 14);
 		}
 
+        // Feld wird als Futter markiert
 		gameMatrix[randomX][randomY] = 1;
 
 		return gameMatrix;
@@ -188,8 +242,46 @@ window.onload = function() {
 		return gameMatrix;
 	}
 
-	function showGameOver() {
-		alert('GAME OVER\nYour score is ' + score);
-	}
+    // Erstellt Dummy-Highscore wenn noch keiner existiert
+    function createHighscore() {
+        highscoreList = new Array(5);
+        highscoreList[0] = {name: 'Matthias', score: 1400};
+        highscoreList[1] = {name: 'Tim', score: 990};
+        highscoreList[2] = {name: 'Sebastian', score: 990};
+        highscoreList[3] = {name: 'Rudi', score: 790};
+        highscoreList[4] = {name: 'Beni', score: 730};
+    }
 
-}; 
+    // Zeigt Highscore an
+    function showHighscore() {
+        var highscoreString = 'Highscore:\n\n';
+        for(var i=0; i<=4; i++) {
+            highscoreString += i+1 + '. ' + highscoreList[i].name + '   ' + highscoreList[i].score + '\n';
+        }
+        alert(highscoreString);
+
+  /*      for(var i=1; i<=5; i++) {
+            document.getElementById('_'+i+'-1').innerHTML = i.toString() + '. ' + highscoreList[i-1].name;
+            document.getElementById('_'+i+'-2').innerHTML = highscoreList[i-1].score;
+        }   */
+    }
+
+    // Zeigt Ende des Spiels an und speichert neuen Highscore geordnet
+    function showGameOver() {
+        if(score > highscoreList[4].score) {
+            var name = prompt('New Highscore!!!\n\nEnter your name:');
+            if(name === null) {
+                name = 'Unknown';
+            }
+            highscoreList[4] = {name: name, score: score};
+            highscoreList.sort(function(a, b){
+                return b.score- a.score;
+            });
+            localStorage.setItem('highscoreList', JSON.stringify(highscoreList));
+        }
+        else {
+            alert('Game Over!');
+        }
+    }
+};
+

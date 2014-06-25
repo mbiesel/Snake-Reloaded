@@ -1,0 +1,46 @@
+body{
+    text-align: center;
+}
+#highscore_table{
+    display: hidden;
+}
+.left{
+    text-align: left;
+}
+.right{
+    text-align: right;
+}
+#game{
+    margin: auto;
+    width: 500px;
+}
+#buttons{
+    width: 90px;
+    float: left;
+}
+#field{
+    width: 320px;
+    float: left;
+}
+#standing{
+    width: 90px;
+    float: right;
+}
+#standing label{
+    font-size: 20px;
+}
+#standing input{
+    text-align: center;
+    font-size: 30px;
+    background-color: black;
+    color: white;
+}
+#controls{
+    text-align: left;
+    width: 500px;
+    margin: auto;
+    clear: both;
+}
+#controls_headline{
+    text-decoration: underline;
+}

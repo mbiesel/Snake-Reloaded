@@ -6,10 +6,50 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Snake Remake Plain JS</title>
 		<script src="snake.js" type="text/javascript"></script>
-		<meta name="gluong" />
-		<!-- Date: 2014-06-08 -->
+		<meta name="luong,heidelberg" />
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-		
+        <h1>Snake Remake with plain Javascript</h1>
+<!--        <table id="highscore_table">
+            <thead>
+                <tr><th>Highscore:</th></tr>
+            </thead>
+            <tbody>
+                <tr><td id="_1-1" class="left"></td><td>    </td><td id="_1-2" class="right"></td></tr>
+                <tr><td id="_2-1" class="left"></td><td>    </td><td id="_2-2" class="right"></td></tr>
+                <tr><td id="_3-1" class="left"></td><td>    </td><td id="_3-2" class="right"></td></tr>
+                <tr><td id="_4-1" class="left"></td><td>    </td><td id="_4-2" class="right"></td></tr>
+                <tr><td id="_5-1" class="left"></td><td>     </td><td id="_5-2" class="right"></td></tr>
+                <tr><td class="left"><input type="button" value="OK"></td></tr>
+            </tbody>
+        </table>    -->
+        <div id="game">
+            <div id="buttons">
+                <input type="button" value="New&#10;Game" onclick="window.location.reload()" onfocus="this.blur()">
+                <p></p>
+                <input id="highscore" type="button" value="Highscore" onfocus="this.blur()">
+            </div>
+            <div id="field">
+                <canvas id="canvas" width="302" height="227">
+                </canvas>
+            </div>
+            <div id="standing">
+                <label for="score">Score: </label><input id="score" type="text" size="2" readonly>
+                <p></p>
+                <label for="level">Level: </label><input id="level" type="text" size="2" readonly>
+            </div>
+        </div>
+        <div id="controls">
+            <h3 id="controls_headline">Controls:</h3>
+            <p>
+                Press any direction to start the game<br><br>
+                <b>&lt;Esc&gt;</b> to pause the game<br>
+                <b>&lt;Arrow Up&gt;</b> to move up<br>
+                <b>&lt;Arrow Down&gt;</b> to move down<br>
+                <b>&lt;Arrow Left&gt;</b> to move left<br>
+                <b>&lt;Arrow Right&gt;</b> to move right
+            </p>
+        </div>
 	</body>
 </html>
